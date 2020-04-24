@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from PriorityQueue import MinPriorityQueue
-from LRU_Cache import LRU_Cache as Cache
+from .PriorityQueue import MinPriorityQueue
+from .LRU_Cache import LRU_Cache as Cache
 
 
 class HuffmanTree:

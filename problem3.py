@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-from HuffmanTree import HuffmanTree
+from DataStructures import HuffmanTree  # <-- implementation here
+# Also uses MinPriorityQueue from PriorityQueue.py
+# Also uses LRU_Cache (through cache 'lookup' for decoding)
 
 
 def huffman_encoding(string):

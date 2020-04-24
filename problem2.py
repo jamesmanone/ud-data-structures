@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import os
-from Stack import Stack
+from DataStructures import Stack
 
 
 def find_files(ext, path):
