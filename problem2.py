@@ -16,5 +16,16 @@ def find_files(ext, path):
     return results
 
 
+def main():
+    answer = ['./testdir/subdir1/a.c', './testdir/subdir5/a.c',
+              './testdir/t1.c', './testdir/subdir3/subsubdir1/b.c']
+    print(u"\nTesting recursive filetype search \u2699")
+    candidate = find_files('c', './testdir')
+    for item in answer:
+        assert(item in candidate)
+    print(u"\u0009\u22C5 File recursion search test passed \U0001F44D")
+
+
 if __name__ == "__main__":
-    print(find_files('c', './testdir'))
+    main()
+    print(u"All tests passed! \U0001F60E")

@@ -99,3 +99,9 @@ class Set:
         head.next = head.next.next
         self.__dec_size()
         return
+
+    def empty(self):
+        for i in range(len(self.__data)):
+            while self.__data[i] is not None:
+                yield self.__data[i].key
+                self.__data[i] = self.__data[i].next

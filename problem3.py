@@ -2,11 +2,13 @@
 from DataStructures import HuffmanTree  # <-- implementation here
 # Also uses MinPriorityQueue from PriorityQueue.py
 # Also uses LRU_Cache (through cache 'lookup' for decoding)
+import sys
 
 
 def huffman_encoding(string):
     tree = HuffmanTree(string)
-    return (tree.encode(string), tree)
+    eString = tree.encode(string) if tree is not None else ''
+    return (eString, tree)
 
 
 def huffman_decoding(eString, tree):
@@ -20,27 +22,29 @@ def openfile(path):
     return string
 
 
+def test_str(str):
+    candidate, tree = huffman_encoding(str)
+    assert(sys.getsizeof(str) > sys.getsizeof(int(candidate, base=2)))
+    print(u"\u0009\u0009\u22C5 Size test passed  \U0001F44D")
+    assert(str == huffman_decoding(candidate, tree))
+    print(u"\u0009\u0009\u22C5 Accuracy test passed  \U0001F44D")
+
+
+def main():
+    print(u"\nTesting Huffman Tree \u2699")
+
+    test1 = "The bird bird bird, the bird is the word"
+    print(u"\u0009\u22C5 Testing normal string:")
+    test_str(test1)
+    test2 = openfile('tst.txt')
+    print(u"\u0009\u22C5 Testing long string")
+    test_str(test2)
+    print(u"\u0009\u22C5 Testing empty string")
+    candidate, tree = huffman_encoding('')
+    assert(tree.decode(candidate) == '')
+    print(u"\u0009\u0009\u22C5 Empty string test passed  \U0001F44D")
+
+
 if __name__ == "__main__":
-    import sys
-    a_great_sentence = "The bird bird bird, the bird is the word"
-
-    print("would you like to read from a file? (press return to skip)")
-    path = input(':>')
-    if path:
-        a_great_sentence = openfile(path)
-
-    print("The size of the data is: {}\n".format(
-            sys.getsizeof(a_great_sentence)))
-    print("The content of the data is: {}\n".format(a_great_sentence))
-
-    encoded_data, tree = huffman_encoding(a_great_sentence)
-
-    print("The size of the encoded data is: {}\n".format(sys.getsizeof(
-            int(encoded_data, base=2))))
-    print("The content of the encoded data is: {}\n".format(encoded_data))
-
-    decoded_data = huffman_decoding(encoded_data, tree)
-
-    print("The size of the decoded data is: {}\n".format(
-            sys.getsizeof(decoded_data)))
-    print("The content of the encoded data is: {}\n".format(decoded_data))
+    main()
+    print(u"All tests passed! \U0001F60E")

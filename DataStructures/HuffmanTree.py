@@ -50,6 +50,8 @@ class HuffmanTree:
             q.enq(node, node.priority)
 
         self.__root = q.deq()
+        if self.__root is None:  # Empty string, no tree
+            return
         self.__root.trim()
         self.__cache = Cache(20)
 
@@ -79,7 +81,6 @@ class HuffmanTree:
         out_str = ''
         for char in string:
             out_str += self.__read_through_cache(char)
-        # print('average code length: '+str(len(out_str)/len(string)))
         return out_str
 
     def decode(self, eString):
