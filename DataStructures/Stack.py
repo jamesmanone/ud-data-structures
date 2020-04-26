@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-
-
 class Stack:
     class Node:
         def __init__(self, data):
@@ -35,6 +32,8 @@ class Stack:
     def is_empty(self):
         return not self.size
 
+    # added the ability to add a whole list at once, adding a prefix to each.
+    # simplifies the directory search
     def push(self, val, prefix=""):
         if isinstance(val, list):
             for i in val:

@@ -1,13 +1,11 @@
 
 
 class LRU_Cache:
-    # Nodes are imutable / copy on write / copy on read
     class Node:
         def __init__(self, key, value):
             self.__key = key
-            self.__value = value
-            self.__next = None
-            self.__valid = True
+            self.value = value
+            self.next = None
             self.__qnext = None
             self.__qprev = None
             self.__q = None
@@ -17,35 +15,13 @@ class LRU_Cache:
             next = f"{self.qnext.key if self.qnext is not None else 'None'}"
             return f"{prev}<--\u007b{self.key}: {self.value}\u007D-->{next}"
 
-        @property
-        def value(self):
-            if self.is_valid:
-                return self.__value
-            return None
-
+        # key is immutable
         @property
         def key(self):
-            if self.is_valid:
-                return self.__key
-            return None
+            return self.__key
 
-        @property
-        def is_valid(self):
-            return self.__valid
-
-        @property
-        def next(self):
-            if self.is_valid:
-                return self.__next
-            return None
-
-        @next.setter
-        def next(self, next):
-            if isinstance(next, LRU_Cache.Node) and self.qnext != next:
-                self.__next = next
-            else:
-                self.__next = None
-
+        # qprev and qnext setters are hooks to always ensure that
+        # self.qnext.qprev == self == self.qprev.qnext (when not None)
         @property
         def qnext(self):
             return self.__qnext
@@ -77,34 +53,19 @@ class LRU_Cache:
         def setQ(self, q):
             self.__q = q
 
+        # remove self from deletion queue. used to reset position after get/set
         def unqueue(self):
             if self.qnext is None or self.qprev is None:
                 self.__q.notify(self)
             else:
                 self.qprev.qnext = self.qnext
-                self.qnext.qprev = self.qprev
                 self.__q.notify(self)
             self.qnext = None
             self.qprev = None
 
         def invalidate(self):
-            '''
-            Invalidate sets Node.__valid to false and removes itself from the
-            deletion queue by stiching qnext and qprev together. Also notifies
-            the queue to handle the case where self is __head or __tail of the
-            queue
-            '''
-            self.__valid = False
-            if self.__q is not None:
-                self.__q.notify(self)
-            if self.qnext is not None and self.qprev is not None:
-                self.qprev.qnext = self.qnext
-            return self.__next
-
-        def update(self, value):
-            new_node = LRU_Cache.Node(self.key, value)
-            new_node.next = self.invalidate()
-            return new_node
+            self.unqueue()
+            return self.next
 
         @classmethod
         def from_Node(cls, node):

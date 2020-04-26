@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-
-
 class MinPriorityQueue:
     class Node:
         def __init__(self, data, priority):
@@ -27,6 +24,7 @@ class MinPriorityQueue:
     def size(self):
         return self.__size
 
+    # O(n) insert into min priority queue
     def enq(self, data, priority):
         node = self.Node(data, priority)
         self.__inc_size()
@@ -46,8 +44,9 @@ class MinPriorityQueue:
         node.next = head.next
         head.next = node
 
+    # O(1) pop
     def deq(self):
-        self.__dec_size()  # no effect is __size is 0
+        self.__dec_size()  # no effect if __size is 0
         if self.is_empty:
             return None
         data = self.__head.data

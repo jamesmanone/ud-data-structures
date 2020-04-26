@@ -36,6 +36,9 @@ class HuffmanTree:
 
     def __init__(self, string):
         map = {}
+        if len(string) == 0:
+            self.__root = HuffmanTree.Node()
+            return
         for char in string:
             if char not in map:
                 map[char] = HuffmanTree.Node(char=char)
@@ -50,11 +53,10 @@ class HuffmanTree:
             q.enq(node, node.priority)
 
         self.__root = q.deq()
-        if self.__root is None:  # Empty string, no tree
-            return
         self.__root.trim()
         self.__cache = Cache(20)
 
+    # recursive tree walking to get char code
     def __get_bits(self, char, node):
         if node is None or node.is_leaf:
             return None
@@ -71,6 +73,7 @@ class HuffmanTree:
         if right is not None:
             return '1' + right
 
+    # Check the cache first, __get_bits on cache miss
     def __read_through_cache(self, char):
         code = self.__cache.get(char)
         if code != -1:
